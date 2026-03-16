@@ -250,5 +250,5 @@ $EncodedEmail = Convert-Base64Url $MsgSW
 # Found this gem here: https://github.com/thinkAmi/PowerShell_misc/blob/master/gmail_api/gmail_sender.ps1
 
 $Content = @{ "raw" = $EncodedEmail; } | ConvertTo-Json
-Invoke-RestMethod -Uri "https://www.googleapis.com/gmail/v1/users/me/messages/send?access_token=$AccessToken" -Method POST -Body $Content -ContentType "Application/Json"
+Invoke-RestMethod -Uri "https://www.googleapis.com/gmail/v1/users/me/messages/send?access_token=$AccessToken" -Method POST -Body $Content -ContentType "Application/Json" | Out-Null
 Write-Host "Mail sent"
