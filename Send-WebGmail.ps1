@@ -227,7 +227,12 @@ $Attachments.ForEach( {
         if (-not(Test-Path $_ -PathType Leaf)) {
             Write-Error "Attachment '$_' does not exist or is a directory"
         }
-        $AttachSize += (Get-Item $_).Length
+        $length = (Get-Item $_).Length
+        if ($length -eq 0) {
+            Write-Warning "Attachment '$_' is zero-length and will be ignored"
+            continue
+        }
+        $AttachSize += $length
         if ($AttachSize -gt 15000000) {
             Write-Error "Maximum total size of attachments (15MiB) would be exceeded. Mail not sent"
         }
