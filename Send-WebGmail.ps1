@@ -79,7 +79,7 @@ Function CheckEmail {
         [Parameter(Position = 0)] [string] $type,
         [Parameter(Position = 1)] [string] $address
     )
-    if ($address -notmatch "^(?(?=^(?:([a-zA-Z0-9_!#$%&'+-/=?^{|}~]+|[a-zA-Z0-9_!#$%&'*+\-\/=?^{|}~].[a-zA-Z0-9_!#$%&'+-/=?^{|}~][\.a-zA-Z0-9_!#$%&'*+\-\/=?^{|}~]))@[a-zA-Z0-9.-]{1,63}$)[a-zA-Z0-9_.!#$%&'*+-/=?^`{|}~]{1,63}@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]{2,})+)$") {
+    if ($address -notmatch "^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$") {
         Write-Error "'$type' address '$address' is not a valid email address"
     }
 }
