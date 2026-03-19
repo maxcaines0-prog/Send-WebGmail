@@ -79,7 +79,7 @@ Function CheckEmail {
         [Parameter(Position = 0)] [string] $type,
         [Parameter(Position = 1)] [string] $address
     )
-    if ($address -notmatch "^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$") {
+    if ($address -notmatch "^(?(?=^(?:([a-zA-Z0-9_!#$%&'+-/=?^{|}~]+|[a-zA-Z0-9_!#$%&'*+\-\/=?^{|}~].[a-zA-Z0-9_!#$%&'+-/=?^{|}~][\.a-zA-Z0-9_!#$%&'*+\-\/=?^{|}~]))@[a-zA-Z0-9.-]{1,63}$)[a-zA-Z0-9_.!#$%&'*+-/=?^`{|}~]{1,63}@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]{2,})+)$") {
         Write-Error "'$type' address '$address' is not a valid email address"
     }
 }
@@ -103,13 +103,17 @@ function ConvertFrom-SecureStringToPlainText ([System.Security.SecureString]$Sec
 
 function Get-MimeType() {
     param($extension = $null);
-    $mimeType = $null;
-    if ( $null -ne $extension ) {
-        $drive = Get-PSDrive HKCR -ErrorAction SilentlyContinue;
-        if ( $null -eq $drive ) {
-            $drive = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+    
+    $mimeType = 'application/octet-stream'
+    try {
+        if ( $null -ne $extension ) {
+            $drive = Get-PSDrive HKCR -ErrorAction SilentlyContinue;
+            if ( $null -eq $drive ) {
+                $drive = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+            }
+            $mimeType = (Get-ItemProperty HKCR:$extension)."Content Type";
         }
-        $mimeType = (Get-ItemProperty HKCR:$extension)."Content Type";
+    } catch {
     }
     $mimeType;
 }
