@@ -166,15 +166,9 @@ $aepath = (Get-ChildItem -Filter *.dll -Recurse (Split-Path ($ae).Source)).FullN
 Add-Type -Path $aepath
 Write-Verbose "AE.Net.Mail DLL found at '$aepath'"
 
-# Open the credentials file. If it does not already exist, set it up by prompting for the details. It is encrypted using Microsoft DPAPI
-
-if (-not($Config)) {
-    $Config = "$HOME\Send-Web-Gmail-creds.json"
-}
-Write-Verbose "Credentials file is '$Config'"
-
 # Get the credentials from the credentials file. This should be encrypted, but might be plaintext JSON if built by hand
 
+Write-Verbose "Credentials file is '$Config'"
 if (-Not(Test-Path $Config -PathType Leaf)) {
     Write-Error "The credentials file '$Config' does not exist. Please run this command with the '-Setup' option to set it up"
 }
